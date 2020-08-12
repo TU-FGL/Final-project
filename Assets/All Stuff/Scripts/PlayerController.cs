@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //Game Over Text
+    public TextMeshProUGUI gameOverText;
+    public Button restartButton;
+    public Button exitButton;
+
     //player's components 
     private Rigidbody playerRb;
     private Animator playerAnim;
-    private AudioSource playerAudio;
+    public AudioSource playerAudio;
 
     //boss
     private Animator bossAnim;
@@ -25,6 +32,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip[] expSound;
     public AudioClip bossSound;
     public AudioClip finishSound;
+
+    public AudioClip victorySound;
 
     //forces
     public float jumpForce;
@@ -66,7 +75,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
         //accessing player's components
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
@@ -87,9 +96,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey("escape"))
+        {
+            ExitGame();
+        }
+
         //playing the sound and start running
         if (!startGame)
         {
@@ -123,6 +139,11 @@ public class PlayerController : MonoBehaviour
             MoveLeft.speed = 0;
             ///if(gameObject.transform.position.x == home.transform.position.x-3f)
         }
+
+
+        
+
+
     }
 
 
@@ -262,19 +283,38 @@ public class PlayerController : MonoBehaviour
         expText.text = "Exp:" + expPoints;
     }
 
+    public void GameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ExitGame()
+    {
+        Debug.Log("Exit Game");
+        Application.Quit();
+    }
+
     private void Death()
     {
         gameOver = true;
+        GameOver();
         Debug.Log("Game Over!");
         playerAnim.SetTrigger("deathTrigger");
         playerAudio.PlayOneShot(deathSound, pitch);
+        restartButton.gameObject.SetActive(true);
+        exitButton.gameObject.SetActive(true);
 
     }
    
     private void Win()
     {
         playerAnim.SetTrigger("victoryTrigger");
-        ///playAudio.PlayOneShot(victorySound, pitch);
+        playerAudio.PlayOneShot(victorySound, pitch);
     }
 
 }

@@ -18,6 +18,7 @@ public class BossController : MonoBehaviour
     //audio
     public AudioClip laughSound;
     public AudioClip enlargeSound;
+    public AudioClip speedupSound;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +78,6 @@ public class BossController : MonoBehaviour
         //transform.localScale /= 1.5f;
         bossAnim.SetFloat("speedMultiplier", 1.0f);
         speedBoss = 0;
-        //bossAudio.PlayOneShot(speedupSound, 0.8f);
+        bossAudio.PlayOneShot(speedupSound, 0.8f);
     }
 }
