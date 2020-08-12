@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    private float speedBoss = 5;
+    public float speedBoss = 5;
     private PlayerController playerControllerScript;
     private int enlargeTreshold=90;
     private int speedUpTreshold=50;
-    public bool isCatched;
     public ParticleSystem explosion;
 
     //boss' components
@@ -17,7 +16,7 @@ public class BossController : MonoBehaviour
     private AudioSource bossAudio;
 
     //audio
-    public AudioClip speedupSound;
+    public AudioClip laughSound;
     public AudioClip enlargeSound;
 
     // Start is called before the first frame update
@@ -30,9 +29,6 @@ public class BossController : MonoBehaviour
         bossRb = GetComponent<Rigidbody>();
         bossAudio = GetComponent<AudioSource>();
 
-        isCatched = true;
-
-        ///gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,20 +38,21 @@ public class BossController : MonoBehaviour
         {
             if ( playerControllerScript.expPoints == speedUpTreshold)//speeding up the Boss
             {
-                ///gameObject.SetActive(true);
+                
                 transform.Translate(Vector3.right * Time.deltaTime * speedBoss,Space.World);
                 StartCoroutine(BossSpeedUpCountdownRoutine());
                 bossAnim.SetFloat("speedMultiplier", 1.5f);
+               /// bossAudio.PlayOneShot(laughSound, 1f);
                 ///explosion.Play();
+
             }
             if (playerControllerScript.expPoints == enlargeTreshold) //enlarging the Boss
             {
                 transform.localScale *= 2;
                 bossAudio.PlayOneShot(enlargeSound, 0.8f);
             }
-        }else if (playerControllerScript.gameOver == true && isCatched)
+        }else if (playerControllerScript.gameOver == true)
         {
-            ///transform.SetPositionAndRotation(transform.position,(0, 90, 0));
             bossAnim.SetTrigger("victoryTrigger");
         }
     }

@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     private float playerInitialPosx;
 
     private float leftBorder = 0;
-    private float rightBorder = 10f;
+    private float rightBorder = 18f;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         Physics.gravity *= gravityModifier;
         gameOver = false;
         expPoints = 0;
-        ///playerInitialPosx = 3f;
+
 
     }
 
@@ -118,8 +118,9 @@ public class PlayerController : MonoBehaviour
         {
             Instantiate(home, new Vector3(30, 0, 0), home.transform.rotation);
             MainAudio.enabled = false;
-            playerAudio.PlayOneShot(finishSound, pitch);
+            ///playerAudio.PlayOneShot(finishSound, pitch);
             playerAnim.SetTrigger("victoryTrigger");
+            MoveLeft.speed = 0;
             ///if(gameObject.transform.position.x == home.transform.position.x-3f)
         }
     }
@@ -139,40 +140,53 @@ public class PlayerController : MonoBehaviour
 
         }
         //getting speed boost
-        else if (collision.gameObject.CompareTag("PowerUp") && !isFat)
+        else if (collision.gameObject.CompareTag("PowerUp"))
         {
-            StartCoroutine(PowerUpCountdownRoutine());
-            jumpForce += 200;
-            //powerupIndicator.gameObject.SetActive(true);
-            GenerateSound(powerSound);
-            Debug.Log("Power Up!");
-            Destroy(collision.gameObject);
-            MoveLeft.speed += 6;
-            playerAnim.SetFloat("speedMultiplier", 1.8f);
-        }
-        else if (collision.gameObject.CompareTag("JunkFood") && !hasPowerup)
-        {
-            StartCoroutine(JunkFoodCountdownRoutine());
-            isFat = true;
-            GenerateSound(junkSound);
-            Debug.Log("Oh no, I will get fat!");
-            jumpForce -= 100;
-            Destroy(collision.gameObject);
-            transform.localScale *= 1.5f;
-            playerAnim.SetFloat("speedMultiplier", 1.0f);
+            
+            if (!isFat)
+            {
+                StartCoroutine(PowerUpCountdownRoutine());
+                jumpForce += 200;
+                //powerupIndicator.gameObject.SetActive(true);
+                GenerateSound(powerSound);
+                Debug.Log("Power Up!");
+                MoveLeft.speed += 6;
+                playerAnim.SetFloat("speedMultiplier", 1.8f);
+                hasPowerup = true;
+            }
 
-            // playerAnim.SetFloat("Speed_f", (runningSpeed+=0.25f));
+            ;
+            Destroy(collision.gameObject);
+            
+        }
+        else if (collision.gameObject.CompareTag("JunkFood"))
+        {
+            if (!hasPowerup)
+            {
+                StartCoroutine(JunkFoodCountdownRoutine());
+                isFat = true;
+                GenerateSound(junkSound);
+                Debug.Log("Oh no, I will get fat!");
+                jumpForce -= 100;
+                transform.localScale *= 1.5f;
+                playerAnim.SetFloat("speedMultiplier", 0.8f);
+            }
+
+            Destroy(collision.gameObject);
+
         }
 
         //getting experience points
         else if (collision.gameObject.CompareTag("Experience"))
         {
-            //GenerateSound(expSound);
+            GenerateSound(expSound);
             Debug.Log("Experience!");
             Destroy(collision.gameObject);
             UpdateExp(10);
         }
-        else if (collision.gameObject.CompareTag("Boss"))
+
+        //collision with boss
+        if (collision.gameObject.CompareTag("Boss"))
         {
             Death();
         }
@@ -195,7 +209,7 @@ public class PlayerController : MonoBehaviour
         jumpForce += 100;
         transform.localScale /= 1.5f;
         playerAnim.SetFloat("speedMultiplier", 1.0f);
-        //powerupIndicator.gameObject.SetActive(false);
+
     }
 
     IEnumerator SpeedUpCountdownRoutine()
@@ -223,12 +237,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //move to right
-        if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder)
+        if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder && hasPowerup)
         {
-            float speed = 100;
-            playerRb.AddForce(Vector3.right * speed, ForceMode.Impulse);
-            transform.Translate(Vector3.right*Input.GetAxis("horizontal") * Time.deltaTime*speed,Space.World);
+            float a = 300f;
+            playerRb.AddForce(Vector3.right * a, ForceMode.Acceleration);
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround && gameObject.transform.position.x > leftBorder && hasPowerup)
+        {
+            float a = 300f;
+            playerRb.AddForce(Vector3.left * a, ForceMode.Acceleration);
+        }
+
     }
     void GenerateSound(AudioClip[] sound)
     {
@@ -248,11 +268,13 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Game Over!");
         playerAnim.SetTrigger("deathTrigger");
         playerAudio.PlayOneShot(deathSound, pitch);
+
     }
    
     private void Win()
     {
         playerAnim.SetTrigger("victoryTrigger");
+        ///playAudio.PlayOneShot(victorySound, pitch);
     }
 
 }

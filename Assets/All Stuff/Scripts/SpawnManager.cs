@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] powerUp;
     public GameObject[] junkFood;
     public GameObject[] expPlatform;
+    public GameObject[] backgrounds;
 
 
     //spawning positions
@@ -27,6 +28,7 @@ public class SpawnManager : MonoBehaviour
     private float starDelayPowerUp = 15;
     ///private float starDelayExp = 25;
     private float starDelayJunkFood = 30;
+    ///private float starDelayBcg =10;
 
     //calling other script
     private PlayerController playerControllerScript;
@@ -41,6 +43,7 @@ public class SpawnManager : MonoBehaviour
         Invoke("SpawnGroundObstacle", starDelayGroundObs);
         Invoke("SpawnPowerUp", starDelayPowerUp);
         Invoke("SpawnJunkFood", starDelayJunkFood);
+
 
 
     }
@@ -70,7 +73,7 @@ public class SpawnManager : MonoBehaviour
         if (playerControllerScript.gameOver == false)
         {
             //Instantiate flying obstacles 
-            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(3.9f, 4f), 0), flyingObstacle[ind].transform.rotation);
+            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(4f, 4.5f), 0), flyingObstacle[ind].transform.rotation);
             fly.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 0, -1f) * flyingForce, ForceMode.Impulse);
             Invoke("SpawnFlyingObstacle", starDelay);
 
