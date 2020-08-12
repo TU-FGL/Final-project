@@ -58,7 +58,7 @@ public class SpawnManager : MonoBehaviour
     {
         float starDelay = Random.Range(16, 22);
         int ind = Random.Range(0, groundObstacle.Length);
-        if (playerControllerScript.gameOver == false)
+        if (playerControllerScript.gameOver == false && ind > 0)
         {
             //Instantiate obstacles on the ground
             Instantiate(groundObstacle[ind], spawnPosGroundObstcle, groundObstacle[ind].transform.rotation);
