@@ -6,8 +6,8 @@ public class BossController : MonoBehaviour
 {
     public float speedBoss = 5;
     private PlayerController playerControllerScript;
-    private int enlargeTreshold=80;
-    private int speedUpTreshold=60;
+    private int enlargeThreshold=80;
+    private int speedUpThreshold=60;
 
     //Particles
     public ParticleSystem explosionParticle;
@@ -20,8 +20,7 @@ public class BossController : MonoBehaviour
 
     //audio
     public AudioClip laughSound;
-    public AudioClip enlargeSound;
-    public AudioClip speedupSound;
+    public AudioClip koraaSound;
 
     // Start is called before the first frame update
     void Start()
@@ -42,22 +41,26 @@ public class BossController : MonoBehaviour
         {
 
             //speeding up the Boss
-            if ( playerControllerScript.expPoints == speedUpTreshold)
+            if ( playerControllerScript.expPoints == speedUpThreshold)
             {
                 
                 transform.Translate(Vector3.right * Time.deltaTime * speedBoss,Space.World);
                 StartCoroutine(BossSpeedUpCountdownRoutine());
                 bossAnim.SetFloat("speedMultiplier", 1.5f);
-                // bossAudio.PlayOneShot(laughSound,1f); //audio doesn't work
+                bossAudio.PlayOneShot(koraaSound,1f); //audio doesn't work
                 explosionParticle.Play();
 
             }
             //enlargeing the boss
-            if (playerControllerScript.expPoints == enlargeTreshold) //enlarging the Boss
+            if (playerControllerScript.expPoints == enlargeThreshold) //enlarging the Boss
             {
                 transform.localScale *= 2;
-                //bossAudio.PlayOneShot(enlargeSound,1f); //audio doesn't work
+                bossAudio.PlayOneShot(laughSound,1f); //audio doesn't work
                 enlargeParticle.Play();
+            }
+            if(playerControllerScript.expPoints== 100)
+            {
+                gameObject.SetActive(false);
             }
         }
         else if (playerControllerScript.gameOver == true)
@@ -84,6 +87,6 @@ public class BossController : MonoBehaviour
         //transform.localScale /= 1.5f;
         bossAnim.SetFloat("speedMultiplier", 1.0f);
         speedBoss = 0;
-        bossAudio.PlayOneShot(speedupSound, 0.8f);
+        
     }
 }

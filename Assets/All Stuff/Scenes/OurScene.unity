@@ -157,7 +157,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1d97f842ecf8e25439b4cde659129a96, type: 3}
   bossSound: {fileID: 8300000, guid: 8ab31aef50ac01c43a66de9b52c6173e, type: 3}
   victorySound: {fileID: 8300000, guid: 3fd2232bb026442488c69f6e2360be47, type: 3}
-  jumpForce: 600
+  jumpForce: 550
   gravityModifier: 1.25
   isOnGround: 1
   gameOver: 0
@@ -218,6 +218,108 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.65
   m_Pitch: 1.2
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &102233804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 387005616331931810, guid: 02a100775fe204141a6d957f9168c9e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 2042937739}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &102233809
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102233804}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -945,7 +1047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundObstacle:
-  - {fileID: 5822279086618953280, guid: 1b73148e94b97c246b3d1f4113aff2b5, type: 3}
+  - {fileID: 8140666342478462569, guid: 97c8403375cb134499609da834bcb483, type: 3}
   flyingObstacle:
   - {fileID: 7776090687021935872, guid: 4a1e9d6a6e93f3f4f8f9e5fba3f78240, type: 3}
   powerUp:
@@ -1401,7 +1503,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428790793}
   m_LocalRotation: {x: 0.00000029802322, y: 0.70710677, z: -0.7071068, w: -0.00000023841858}
-  m_LocalPosition: {x: 40, y: 5, z: 1.95}
+  m_LocalPosition: {x: 40, y: 5, z: 5}
   m_LocalScale: {x: 8, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2516,7 +2618,7 @@ PrefabInstance:
     - target: {fileID: 384008092729331924, guid: 02a100775fe204141a6d957f9168c9e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.08
+      value: -1.95
       objectReference: {fileID: 0}
     - target: {fileID: 384008092729331924, guid: 02a100775fe204141a6d957f9168c9e2,
         type: 3}
@@ -2616,6 +2718,16 @@ PrefabInstance:
     - target: {fileID: 385660364659660681, guid: 02a100775fe204141a6d957f9168c9e2,
         type: 3}
       propertyPath: explosionParticle
+      value: 
+      objectReference: {fileID: 578166968}
+    - target: {fileID: 385660364659660681, guid: 02a100775fe204141a6d957f9168c9e2,
+        type: 3}
+      propertyPath: koraaSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 513fc7134b175d04683759176c3b8da3, type: 3}
+    - target: {fileID: 385660364659660681, guid: 02a100775fe204141a6d957f9168c9e2,
+        type: 3}
+      propertyPath: enlargeParticle
       value: 
       objectReference: {fileID: 578166968}
     - target: {fileID: 385660364659660687, guid: 02a100775fe204141a6d957f9168c9e2,
@@ -2720,7 +2832,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135939559}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23, y: 5, z: 2}
+  m_LocalPosition: {x: 23, y: 5, z: 5.1}
   m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

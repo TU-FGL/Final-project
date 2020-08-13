@@ -147,7 +147,6 @@ public class PlayerController : MonoBehaviour
         else if (expPoints == tresholdHome)
         {
             Instantiate(home, new Vector3(30, 0, 0), home.transform.rotation);
-            MainAudio.enabled = false;
             //playerAudio.PlayOneShot(finishSound, pitch); //audio doesnt work
             playerAnim.SetTrigger("joyTrigger");
         }
@@ -182,12 +181,11 @@ public class PlayerController : MonoBehaviour
                 
                 GenerateSound(powerSound);
                 Debug.Log("Power Up!");
-                ///MoveLeft.speed += 5;
                 hasPowerup = true;
                 Destroy(collision.gameObject);
 
                 //player
-                playerAnim.SetFloat("speedMultiplier", 1.8f);
+                ///playerAnim.SetFloat("speedMultiplier", 1.8f);
                 powerUpParticle.Play();
                 jumpForce += 100;
             }
@@ -206,8 +204,8 @@ public class PlayerController : MonoBehaviour
 
             //player
             jumpForce -= 100;
-            transform.localScale *= 1.5f;
-            playerAnim.SetFloat("speedMultiplier", 0.8f);
+            transform.localScale *= 1.35f;
+            ///playerAnim.SetFloat("speedMultiplier", 0.8f);
 
             Destroy(collision.gameObject);
 
@@ -240,15 +238,15 @@ public class PlayerController : MonoBehaviour
         ///MoveLeft.speed -= 5f;
 
         jumpForce -= 100;
-        playerAnim.SetFloat("speedMultiplier", 1.0f);
+        ///playerAnim.SetFloat("speedMultiplier", 1.0f);
     }
     IEnumerator JunkFoodCountdownRoutine()
     {
         yield return new WaitForSeconds(4);
         isFat = false;
         jumpForce += 100;
-        transform.localScale /= 1.5f;
-        playerAnim.SetFloat("speedMultiplier", 1.0f);
+        transform.localScale /= 1.35f;
+        ///playerAnim.SetFloat("speedMultiplier", 1.0f);
 
     }
 
@@ -278,16 +276,16 @@ public class PlayerController : MonoBehaviour
         }
 
         //move to right
-        if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder && hasPowerup)
+        if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder)
         {
-            float a = 250f;
+            float a = 300f;
             playerRb.AddForce(Vector3.right * a, ForceMode.Acceleration);
         }
 
         //move to left
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround && gameObject.transform.position.x > leftBorder && hasPowerup)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround && gameObject.transform.position.x > leftBorder)
         {
-            float a = 250f;
+            float a = 300f;
             playerRb.AddForce(Vector3.left * a, ForceMode.Acceleration);
         }
 

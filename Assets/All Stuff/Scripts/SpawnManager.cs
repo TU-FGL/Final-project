@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
 
     //spawning positions
     ///private Vector3 spawnPosFlyingObstacle = new Vector3(25, 0, 0);
-    private Vector3 spawnPosGroundObstcle = new Vector3(30, 0, 1.5f);
+    private Vector3 spawnPosGroundObstcle = new Vector3(30, 1, 1.5f);
     ///private Vector3 spawnPosExpPlatform = new Vector3(25, 5, 1);
     ///private float heightFood = Random.Range(1f,3f);
    /// private Vector3 spawnPosFood;
@@ -24,9 +24,10 @@ public class SpawnManager : MonoBehaviour
 
     //time Delays
     private float starDelayFlyingObs = 2;
-    private float starDelayGroundObs = 5;
-    private float starDelayPowerUp = 9;
+    private float starDelayGroundObs = 4;
+    private float starDelayPowerUp = 8;
     private float starDelayJunkFood = 12;
+    private float starDelay = 14;
 
     //calling other script
     private PlayerController playerControllerScript;
@@ -55,7 +56,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnGroundObstacle()
     {
-        float starDelay = Random.Range(16, 22);
+        //float starDelay = 10;// Random.Range(16, 22);
         int ind = Random.Range(0, groundObstacle.Length);
         if (ind > 0 && !playerControllerScript.finish)
         {
@@ -67,15 +68,15 @@ public class SpawnManager : MonoBehaviour
     }
     void SpawnFlyingObstacle()
     {
-        float starDelay = Random.Range(9, 13);
+        //float starDelay = 10;// Random.Range(6, 10);
         int ind = Random.Range(0, flyingObstacle.Length);
         if (!playerControllerScript.finish)
         {
             //Instantiate flying obstacles 
-            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(3.9f, 5f), 1.5f), flyingObstacle[ind].transform.rotation);
+            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(4.3f, 5.8f), 1.5f), flyingObstacle[ind].transform.rotation);
             fly.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 0, -1f) * flyingForce, ForceMode.Impulse);
             fly.GetComponent<Rigidbody>().AddForce(Vector3.left * 100, ForceMode.Impulse);
-            Invoke("SpawnFlyingObstacle", starDelay);
+            Invoke("SpawnFlyingObstacle", starDelay/2);
 
         }
     }
@@ -84,13 +85,13 @@ public class SpawnManager : MonoBehaviour
         int ind = Random.Range(0, expPlatform.Length);
         if (!playerControllerScript.finish)
         {
-            Instantiate(expPlatform[ind], new Vector3(25, Random.Range(3.5f, 5f), 1.5f), expPlatform[ind].transform.rotation);
+            Instantiate(expPlatform[ind], new Vector3(25, Random.Range(3f, 3.9f), 1.5f), expPlatform[ind].transform.rotation);
         }
 
     }
     void SpawnPowerUp()
     {
-        float starDelay = Random.Range(12, 18);
+        //float starDelay = 10;//Random.Range(9, 15);
         int ind = Random.Range(0, powerUp.Length);
         if (!playerControllerScript.finish)
         {
@@ -103,7 +104,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnJunkFood()
     {
-        float starDelay = Random.Range(10, 20);
+        //float starDelay = 10;// Random.Range(10, 15);
         int ind = Random.Range(0, junkFood.Length);
         if (!playerControllerScript.finish)
         {
@@ -115,7 +116,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnCountDown()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         SpawnExpPlatform();
     }
 }
