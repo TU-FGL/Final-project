@@ -15,20 +15,18 @@ public class SpawnManager : MonoBehaviour
 
     //spawning positions
     ///private Vector3 spawnPosFlyingObstacle = new Vector3(25, 0, 0);
-    private Vector3 spawnPosGroundObstcle = new Vector3(25, 0, 0);
+    private Vector3 spawnPosGroundObstcle = new Vector3(30, 0, 1.5f);
     ///private Vector3 spawnPosExpPlatform = new Vector3(25, 5, 1);
-    private Vector3 spawnPosFood = new Vector3(25, 1, 0);
-
+    ///private float heightFood = Random.Range(1f,3f);
+   /// private Vector3 spawnPosFood;
 
 
 
     //time Delays
-    private float starDelayFlyingObs = 3;
-    private float starDelayGroundObs = 8;
-    private float starDelayPowerUp = 15;
-    ///private float starDelayExp = 25;
-    private float starDelayJunkFood = 30;
-    ///private float starDelayBcg =10;
+    private float starDelayFlyingObs = 2;
+    private float starDelayGroundObs = 5;
+    private float starDelayPowerUp = 9;
+    private float starDelayJunkFood = 12;
 
     //calling other script
     private PlayerController playerControllerScript;
@@ -39,26 +37,27 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+
         Invoke("SpawnFlyingObstacle", starDelayFlyingObs);
         Invoke("SpawnGroundObstacle", starDelayGroundObs);
         Invoke("SpawnPowerUp", starDelayPowerUp);
         Invoke("SpawnJunkFood", starDelayJunkFood);
 
-
-
+        ///spawnPosFood = new Vector3(25, heightFood, 0);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void SpawnGroundObstacle()
     {
         float starDelay = Random.Range(16, 22);
         int ind = Random.Range(0, groundObstacle.Length);
-        if (playerControllerScript.gameOver == false)
+        if (ind > 0 && !playerControllerScript.finish)
         {
             //Instantiate obstacles on the ground
             Instantiate(groundObstacle[ind], spawnPosGroundObstcle, groundObstacle[ind].transform.rotation);
@@ -70,23 +69,22 @@ public class SpawnManager : MonoBehaviour
     {
         float starDelay = Random.Range(9, 13);
         int ind = Random.Range(0, flyingObstacle.Length);
-        if (playerControllerScript.gameOver == false)
+        if (!playerControllerScript.finish)
         {
             //Instantiate flying obstacles 
-            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(4f, 4.5f), 0), flyingObstacle[ind].transform.rotation);
+            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(3.9f, 4.9f), 1.5f), flyingObstacle[ind].transform.rotation);
             fly.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 0, -1f) * flyingForce, ForceMode.Impulse);
+            fly.GetComponent<Rigidbody>().AddForce(Vector3.left * flyingForce/2, ForceMode.Impulse);
             Invoke("SpawnFlyingObstacle", starDelay);
 
         }
     }
     void SpawnExpPlatform()
     {
-        //float starDelay = Random.Range(9, 13);
         int ind = Random.Range(0, expPlatform.Length);
-        if (playerControllerScript.gameOver == false)
+        if (!playerControllerScript.finish)
         {
-            Instantiate(expPlatform[ind], new Vector3(25, Random.Range(3.5f, 5f), 1), expPlatform[ind].transform.rotation);
-            //Invoke("SpawnExpPlatform", starDelay);
+            Instantiate(expPlatform[ind], new Vector3(25, Random.Range(3.5f, 5f), 1.5f), expPlatform[ind].transform.rotation);
         }
 
     }
@@ -94,9 +92,9 @@ public class SpawnManager : MonoBehaviour
     {
         float starDelay = Random.Range(12, 18);
         int ind = Random.Range(0, powerUp.Length);
-        if (playerControllerScript.gameOver == false)
+        if (!playerControllerScript.finish)
         {
-            Instantiate(powerUp[ind], spawnPosFood, powerUp[ind].transform.rotation);
+            Instantiate(powerUp[ind], new Vector3(25,Random.Range(1f, 3f), 1.5f), powerUp[ind].transform.rotation);
             Invoke("SpawnPowerUp", starDelay);
             StartCoroutine("SpawnCountDown");
         }
@@ -105,11 +103,11 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnJunkFood()
     {
-        float starDelay = Random.Range(17, 30);
+        float starDelay = Random.Range(17, 25);
         int ind = Random.Range(0, junkFood.Length);
-        if (playerControllerScript.gameOver == false)
+        if (!playerControllerScript.finish)
         {
-            Instantiate(junkFood[ind], spawnPosFood, junkFood[ind].transform.rotation);
+            Instantiate(junkFood[ind], new Vector3(25, Random.Range(1f, 3f), 1.5f), junkFood[ind].transform.rotation);
             Invoke("SpawnJunkFood", starDelay);
         }
     }

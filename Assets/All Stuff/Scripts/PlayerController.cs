@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //Game Over Text
+    public TextMeshProUGUI gameOverText;
+    public Button restartButton;
+    public Button exitButton;
+
     //player's components 
     private Rigidbody playerRb;
     private Animator playerAnim;
-    private AudioSource playerAudio;
+    public AudioSource playerAudio;
 
     //boss
     private Animator bossAnim;
@@ -26,10 +33,11 @@ public class PlayerController : MonoBehaviour
     public AudioClip bossSound;
     public AudioClip finishSound;
 
+    public AudioClip victorySound;
+
     //forces
     public float jumpForce;
-    public float throwForce;
-    public float gravityModifier;
+    ///public float gravityModifier;
 
     //bools
     public bool isOnGround=true;
@@ -37,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public bool gameOver;
     private bool hasPowerup = true;
     private bool isFat = false;
+    public bool finish;// whether game is finished/over
 
     //experience points
     public int expPoints;
@@ -45,8 +54,10 @@ public class PlayerController : MonoBehaviour
     //treshold of exp when the game speeds up
     private int tresholdSpeedUp=50;
 
-
-    ///public ParticleSystem explosionParticle;
+    //Particles
+    public ParticleSystem fireworksParticle;
+    public ParticleSystem crashParticle;
+    public ParticleSystem powerUpParticle;
 
     //calling other scripts
     private MoveLeft MoveLeft;
@@ -58,15 +69,16 @@ public class PlayerController : MonoBehaviour
     public GameObject home;
 
     private float pitch = 3f;
+
+    //speed when boss arrives or when has powerup
     private float speedPlayer=5;
-    private float playerInitialPosx;
 
     private float leftBorder = 0;
     private float rightBorder = 18f;
     // Start is called before the first frame update
     void Start()
     {
-
+        
         //accessing player's components
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
@@ -80,23 +92,37 @@ public class PlayerController : MonoBehaviour
         ///boss = GameObject.Find("Boss");
 
         //setting variables
-        Physics.gravity *= gravityModifier;
+        ///Physics.gravity *= gravityModifier;
         gameOver = false;
         expPoints = 0;
-
+        finish = false;
+        isFat = false;
+        hasPowerup = false;
 
     }
+
+    
 
     // Update is called once per frame
     void Update()
     {
+        if (gameOver || (expPoints == tresholdHome))
+        {
+            finish = true;
+        }
+
+        if (Input.GetKey("escape"))
+        {
+            ExitGame();
+        }
+
         //playing the sound and start running
         if (!startGame)
         {
             playerAudio.PlayOneShot(startSound, pitch);
             startGame = true;
 
-        }//else MainAudio.enabled = true;
+        }
 
         if (!gameOver)
         {
@@ -112,17 +138,21 @@ public class PlayerController : MonoBehaviour
         {
             transform.Translate(Vector3.right * speedPlayer*Time.deltaTime,Space.World);
             StartCoroutine(SpeedUpCountdownRoutine());
-            ///playerAudio.PlayOneShot(bossSound, pitch);
+            //playerAudio.PlayOneShot(bossSound, pitch); //audio doesnt work
         }
         else if (expPoints == tresholdHome)
         {
             Instantiate(home, new Vector3(30, 0, 0), home.transform.rotation);
             MainAudio.enabled = false;
-            ///playerAudio.PlayOneShot(finishSound, pitch);
-            playerAnim.SetTrigger("victoryTrigger");
+            //playerAudio.PlayOneShot(finishSound, pitch); //audio doesnt work
+            playerAnim.SetTrigger("joyTrigger");
             MoveLeft.speed = 0;
-            ///if(gameObject.transform.position.x == home.transform.position.x-3f)
         }
+
+
+        
+
+
     }
 
 
@@ -146,16 +176,19 @@ public class PlayerController : MonoBehaviour
             if (!isFat)
             {
                 StartCoroutine(PowerUpCountdownRoutine());
-                jumpForce += 200;
-                //powerupIndicator.gameObject.SetActive(true);
+                
                 GenerateSound(powerSound);
                 Debug.Log("Power Up!");
-                MoveLeft.speed += 6;
-                playerAnim.SetFloat("speedMultiplier", 1.8f);
+                MoveLeft.speed += 5;
                 hasPowerup = true;
+
+                //player
+                playerAnim.SetFloat("speedMultiplier", 1.8f);
+                powerUpParticle.Play();
+                jumpForce += 100;
             }
 
-            ;
+
             Destroy(collision.gameObject);
             
         }
@@ -164,9 +197,13 @@ public class PlayerController : MonoBehaviour
             if (!hasPowerup)
             {
                 StartCoroutine(JunkFoodCountdownRoutine());
+
                 isFat = true;
                 GenerateSound(junkSound);
                 Debug.Log("Oh no, I will get fat!");
+                MoveLeft.speed += 5;
+
+                //player
                 jumpForce -= 100;
                 transform.localScale *= 1.5f;
                 playerAnim.SetFloat("speedMultiplier", 0.8f);
@@ -198,9 +235,10 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(7);
         hasPowerup = false;
-        jumpForce -= 200;
+        MoveLeft.speed -= 5f;
+
+        jumpForce -= 100;
         playerAnim.SetFloat("speedMultiplier", 1.0f);
-        //powerupIndicator.gameObject.SetActive(false);
     }
     IEnumerator JunkFoodCountdownRoutine()
     {
@@ -209,6 +247,7 @@ public class PlayerController : MonoBehaviour
         jumpForce += 100;
         transform.localScale /= 1.5f;
         playerAnim.SetFloat("speedMultiplier", 1.0f);
+        MoveLeft.speed += 5f;
 
     }
 
@@ -216,6 +255,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         speedPlayer = 0;
+        
     }
     void MovePlayer()
     {
@@ -239,13 +279,14 @@ public class PlayerController : MonoBehaviour
         //move to right
         if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder && hasPowerup)
         {
-            float a = 300f;
+            float a = 250f;
             playerRb.AddForce(Vector3.right * a, ForceMode.Acceleration);
         }
 
+        //move to left
         if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround && gameObject.transform.position.x > leftBorder && hasPowerup)
         {
-            float a = 300f;
+            float a = 250f;
             playerRb.AddForce(Vector3.left * a, ForceMode.Acceleration);
         }
 
@@ -262,19 +303,40 @@ public class PlayerController : MonoBehaviour
         expText.text = "Exp:" + expPoints;
     }
 
+    public void GameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ExitGame()
+    {
+        Debug.Log("Exit Game");
+        Application.Quit();
+    }
+
     private void Death()
     {
         gameOver = true;
+        GameOver();
         Debug.Log("Game Over!");
         playerAnim.SetTrigger("deathTrigger");
         playerAudio.PlayOneShot(deathSound, pitch);
+        restartButton.gameObject.SetActive(true);
+        exitButton.gameObject.SetActive(true);
+        crashParticle.Play();
 
     }
    
     private void Win()
     {
-        playerAnim.SetTrigger("victoryTrigger");
-        ///playAudio.PlayOneShot(victorySound, pitch);
+        playerAnim.SetTrigger("joyTrigger");
+        playerAudio.PlayOneShot(victorySound, pitch);
+        fireworksParticle.Play();
     }
 
 }

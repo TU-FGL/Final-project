@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{F092D125-03F8-A799-0AD7-2D86ED69ADDA}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/All Stuff/Scripts/BossController.cs">
+    <Files>
+      <File FileName="Assets/All Stuff/Scripts/SpawnManager.cs" Line="9" Column="40" />
+      <File FileName="Assets/All Stuff/Scripts/BossController.cs" Line="21" Column="35" />
+      <File FileName="Assets/All Stuff/Scripts/PlayerController.cs" Line="36" Column="35" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Final-project" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="All Stuff" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="BossController.cs" selected="True" />
+                </Node>
+                <Node name="Sound" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="4ec42b07-481f-4524-85e1-2309c225d31d" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

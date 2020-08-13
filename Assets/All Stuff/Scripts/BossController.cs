@@ -8,7 +8,10 @@ public class BossController : MonoBehaviour
     private PlayerController playerControllerScript;
     private int enlargeTreshold=90;
     private int speedUpTreshold=50;
-    public ParticleSystem explosion;
+
+    //Particles
+    public ParticleSystem explosionParticle;
+    public ParticleSystem enlargeParticle;
 
     //boss' components
     private Animator bossAnim;
@@ -18,6 +21,7 @@ public class BossController : MonoBehaviour
     //audio
     public AudioClip laughSound;
     public AudioClip enlargeSound;
+    public AudioClip speedupSound;
 
     // Start is called before the first frame update
     void Start()
@@ -36,22 +40,27 @@ public class BossController : MonoBehaviour
     {
         if (playerControllerScript.gameOver == false)
         {
-            if ( playerControllerScript.expPoints == speedUpTreshold)//speeding up the Boss
+
+            //speeding up the Boss
+            if ( playerControllerScript.expPoints == speedUpTreshold)
             {
                 
                 transform.Translate(Vector3.right * Time.deltaTime * speedBoss,Space.World);
                 StartCoroutine(BossSpeedUpCountdownRoutine());
                 bossAnim.SetFloat("speedMultiplier", 1.5f);
-               /// bossAudio.PlayOneShot(laughSound, 1f);
-                ///explosion.Play();
+                // bossAudio.PlayOneShot(laughSound,1f); //audio doesn't work
+                explosionParticle.Play();
 
             }
+            //enlargeing the boss
             if (playerControllerScript.expPoints == enlargeTreshold) //enlarging the Boss
             {
                 transform.localScale *= 2;
-                bossAudio.PlayOneShot(enlargeSound, 0.8f);
+                //bossAudio.PlayOneShot(enlargeSound,1f); //audio doesn't work
+                enlargeParticle.Play();
             }
-        }else if (playerControllerScript.gameOver == true)
+        }
+        else if (playerControllerScript.gameOver == true)
         {
             bossAnim.SetTrigger("victoryTrigger");
         }
@@ -63,8 +72,6 @@ public class BossController : MonoBehaviour
         {
 
             playerControllerScript.gameOver = true;
-
-            ///explosionParticle.Play();
             collision.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.right, ForceMode.Impulse);
             bossAnim.SetTrigger("victoryTrigger");
 
@@ -77,6 +84,6 @@ public class BossController : MonoBehaviour
         //transform.localScale /= 1.5f;
         bossAnim.SetFloat("speedMultiplier", 1.0f);
         speedBoss = 0;
-        //bossAudio.PlayOneShot(speedupSound, 0.8f);
+        bossAudio.PlayOneShot(speedupSound, 0.8f);
     }
 }
