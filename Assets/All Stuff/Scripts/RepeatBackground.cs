@@ -11,17 +11,17 @@ public class RepeatBackground : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+        /*playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         startPos = transform.position;
-        repeatWidth =GetComponent<BoxCollider>().size.x/2;
+        repeatWidth =GetComponent<BoxCollider>().size.x/2;*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.x < startPos.x - repeatWidth)
+       /* if (transform.position.x < startPos.x - repeatWidth)
         {
             transform.position = startPos;
-        }
+        }*/
     }
 }

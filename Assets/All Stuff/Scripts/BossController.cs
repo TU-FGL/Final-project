@@ -23,6 +23,11 @@ public class BossController : MonoBehaviour
     public AudioClip enlargeSound;
     public AudioClip speedupSound;
 
+    //bool to check if sound was played
+    private bool isLaughSoundPlayed = false;
+    private bool isEnlargeSoundSoundPlayed = false;
+    private bool isBossRotated = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +53,12 @@ public class BossController : MonoBehaviour
                 transform.Translate(Vector3.right * Time.deltaTime * speedBoss,Space.World);
                 StartCoroutine(BossSpeedUpCountdownRoutine());
                 bossAnim.SetFloat("speedMultiplier", 1.5f);
-                // bossAudio.PlayOneShot(laughSound,1f); //audio doesn't work
+                
+                if (!isLaughSoundPlayed)
+                {
+                    bossAudio.PlayOneShot(laughSound, 1f); //audio doesn't work
+                    isLaughSoundPlayed = true;
+                }
                 explosionParticle.Play();
 
             }
@@ -56,13 +66,24 @@ public class BossController : MonoBehaviour
             if (playerControllerScript.expPoints == enlargeTreshold) //enlarging the Boss
             {
                 transform.localScale *= 2;
-                //bossAudio.PlayOneShot(enlargeSound,1f); //audio doesn't work
+                //
+                if (!isEnlargeSoundSoundPlayed)
+                {
+                    bossAudio.PlayOneShot(enlargeSound, 1f); //audio doesn't work
+                    isEnlargeSoundSoundPlayed = true;
+                }
+
                 enlargeParticle.Play();
             }
         }
         else if (playerControllerScript.gameOver == true)
         {
-            bossAnim.SetTrigger("victoryTrigger");
+            if (!isBossRotated)
+            {
+                bossRb.transform.Rotate(0, 90, 0);
+
+                bossAnim.SetTrigger("victoryTrigger");
+            }
         }
     }
 

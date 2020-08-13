@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip bossSound;
 
     public AudioClip victorySound;
+    public AudioClip finishSound;
 
     //forces
     public float jumpForce;
@@ -76,7 +77,12 @@ public class PlayerController : MonoBehaviour
 
     private float leftBorder = 0;
     private float rightBorder = 18f;
-    
+
+    //bool variables to detect if a sound was played
+    private bool isBossSoundPlayed = false;
+    private bool isFinishSoundPlayed = false;
+    private bool isRotated = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -88,7 +94,7 @@ public class PlayerController : MonoBehaviour
         playerAudio = GetComponent<AudioSource>();
 
         //accessing others' components
-        MoveLeft = GameObject.Find("Background").GetComponent<MoveLeft>();
+        //MoveLeft = GameObject.Find("Background").GetComponent<MoveLeft>();
         MainAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
         bossAnim = GameObject.Find("Boss").GetComponent<Animator>();
 
@@ -142,13 +148,29 @@ public class PlayerController : MonoBehaviour
         {
             transform.Translate(Vector3.right * speedPlayer*Time.deltaTime,Space.World);
             StartCoroutine(SpeedUpCountdownRoutine());
-            //playerAudio.PlayOneShot(bossSound, pitch); //audio doesnt work
+            if (!isBossSoundPlayed)
+            {
+                playerAudio.PlayOneShot(bossSound, pitch); //audio doesnt work
+                isBossSoundPlayed = true;
+            }
         }
         else if (expPoints == tresholdHome)
         {
+            if (!isRotated)
+            {
+                Debug.Log("won");
+                playerRb.transform.Rotate(0, 90, 0);
+                isRotated = true;
+            }
+
             Instantiate(home, new Vector3(30, 0, 0), home.transform.rotation);
             MainAudio.enabled = false;
-            //playerAudio.PlayOneShot(finishSound, pitch); //audio doesnt work
+
+            if (!isFinishSoundPlayed)
+            {
+                playerAudio.PlayOneShot(finishSound, pitch); //audio doesnt work
+                isFinishSoundPlayed = true;
+            }
             playerAnim.SetTrigger("joyTrigger");
         }
 
@@ -188,7 +210,11 @@ public class PlayerController : MonoBehaviour
 
                 //player
                 playerAnim.SetFloat("speedMultiplier", 1.8f);
-                powerUpParticle.Play();
+                if (null != powerUpParticle)
+                {
+
+                    powerUpParticle.Play();
+                }
                 jumpForce += 100;
             }
 
@@ -265,7 +291,7 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isOnGround = false;
-            ///playerAnim.SetTrigger("jumpTrigger");
+            playerAnim.SetTrigger("jumpTrigger");
             GenerateSound(jumpSound);
 
         }
@@ -278,16 +304,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //move to right
-        if (Input.GetKeyDown(KeyCode.RightArrow)&&isOnGround && gameObject.transform.position.x < rightBorder && hasPowerup)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && isOnGround)// && gameObject.transform.position.x < rightBorder && hasPowerup)
         {
-            float a = 250f;
+            Debug.Log("pushed");
+            float a = 200f;
             playerRb.AddForce(Vector3.right * a, ForceMode.Acceleration);
         }
 
         //move to left
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround && gameObject.transform.position.x > leftBorder && hasPowerup)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround)// && gameObject.transform.position.x > leftBorder && hasPowerup)
         {
-            float a = 250f;
+            float a = 200f;
             playerRb.AddForce(Vector3.left * a, ForceMode.Acceleration);
         }
 
@@ -329,17 +356,25 @@ public class PlayerController : MonoBehaviour
         playerAudio.PlayOneShot(deathSound, pitch);
         restartButton.gameObject.SetActive(true);
         exitButton.gameObject.SetActive(true);
-        crashParticle.Play();
+        if (null != crashParticle)
+        {
+
+            crashParticle.Play();
+        }
 
     }
    
     private void Win()
     {
 
-
-        playerAnim.SetTrigger("joyTrigger");
+        Debug.Log("won");
+        playerRb.transform.Rotate(0, 180, 0);
         playerAudio.PlayOneShot(victorySound, pitch);
-        fireworksParticle.Play();
+        if(null != fireworksParticle)
+        {
+
+            fireworksParticle.Play();
+        }
     }
 
 }

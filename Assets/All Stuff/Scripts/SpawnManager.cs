@@ -12,10 +12,9 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] expPlatform;
     public GameObject[] backgrounds;
 
-
     //spawning positions
     ///private Vector3 spawnPosFlyingObstacle = new Vector3(25, 0, 0);
-    private Vector3 spawnPosGroundObstcle = new Vector3(30, 0, 1.5f);
+    private Vector3 spawnPosGroundObstcle = new Vector3(300, 0, 1.5f);
     ///private Vector3 spawnPosExpPlatform = new Vector3(25, 5, 1);
     ///private float heightFood = Random.Range(1f,3f);
    /// private Vector3 spawnPosFood;
@@ -37,6 +36,8 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        
 
         Invoke("SpawnFlyingObstacle", starDelayFlyingObs);
         Invoke("SpawnGroundObstacle", starDelayGroundObs);
@@ -72,7 +73,7 @@ public class SpawnManager : MonoBehaviour
         if (!playerControllerScript.finish)
         {
             //Instantiate flying obstacles 
-            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(25, Random.Range(3.9f, 5f), 1.5f), flyingObstacle[ind].transform.rotation);
+            GameObject fly = Instantiate(flyingObstacle[ind], new Vector3(100, Random.Range(3.9f, 5f), 1.5f), flyingObstacle[ind].transform.rotation);
             fly.GetComponent<Rigidbody>().AddTorque(new Vector3(0, 0, -1f) * flyingForce, ForceMode.Impulse);
             fly.GetComponent<Rigidbody>().AddForce(Vector3.left * 100, ForceMode.Impulse);
             Invoke("SpawnFlyingObstacle", starDelay);
@@ -84,7 +85,7 @@ public class SpawnManager : MonoBehaviour
         int ind = Random.Range(0, expPlatform.Length);
         if (!playerControllerScript.finish)
         {
-            Instantiate(expPlatform[ind], new Vector3(25, Random.Range(3.5f, 5f), 1.5f), expPlatform[ind].transform.rotation);
+            Instantiate(expPlatform[ind], new Vector3(100, Random.Range(3.5f, 5f), 1.5f), expPlatform[ind].transform.rotation);
         }
 
     }
@@ -94,7 +95,7 @@ public class SpawnManager : MonoBehaviour
         int ind = Random.Range(0, powerUp.Length);
         if (!playerControllerScript.finish)
         {
-            Instantiate(powerUp[ind], new Vector3(25,Random.Range(1f, 3f), 1.5f), powerUp[ind].transform.rotation);
+            Instantiate(powerUp[ind], new Vector3(100, Random.Range(1f, 3f), 1.5f), powerUp[ind].transform.rotation);
             Invoke("SpawnPowerUp", starDelay);
             StartCoroutine("SpawnCountDown");
         }
@@ -107,7 +108,7 @@ public class SpawnManager : MonoBehaviour
         int ind = Random.Range(0, junkFood.Length);
         if (!playerControllerScript.finish)
         {
-            Instantiate(junkFood[ind], new Vector3(25, Random.Range(1f, 3.5f), 1.5f), junkFood[ind].transform.rotation);
+            Instantiate(junkFood[ind], new Vector3(100, Random.Range(1f, 3.5f), 1.5f), junkFood[ind].transform.rotation);
             Invoke("SpawnJunkFood", starDelay);
         }
     }
