@@ -6,8 +6,8 @@ public class BossController : MonoBehaviour
 {
     public float speedBoss = 5;
     private PlayerController playerControllerScript;
-    private int enlargeTreshold=90;
-    private int speedUpTreshold=50;
+    private int enlargeTreshold=80;
+    private int speedUpTreshold=60;
 
     //Particles
     public ParticleSystem explosionParticle;
