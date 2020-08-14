@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{F092D125-03F8-A799-0AD7-2D86ED69ADDA}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/All Stuff/Scripts/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/All Stuff/Scripts/SpawnManager.cs">
     <Files>
-      <File FileName="Assets/All Stuff/Scripts/SpawnManager.cs" Line="111" Column="55" />
-      <File FileName="Assets/All Stuff/Scripts/BossController.cs" />
-      <File FileName="Assets/All Stuff/Scripts/PlayerController.cs" Line="357" Column="50" />
+      <File FileName="Assets/All Stuff/Scripts/SpawnManager.cs" Line="76" Column="78" />
+      <File FileName="Assets/All Stuff/Scripts/BossController.cs" Line="106" Column="1" />
+      <File FileName="Assets/All Stuff/Scripts/PlayerController.cs" Line="264" Column="48" />
       <File FileName="Assets/All Stuff/Scripts/RepeatBackground.cs" />
       <File FileName="Assets/All Stuff/Scripts/MoveLeft.cs" />
       <File FileName="Assets/All Stuff/Scripts/backgroundLoop.cs" />

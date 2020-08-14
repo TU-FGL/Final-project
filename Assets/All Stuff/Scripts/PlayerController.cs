@@ -261,6 +261,7 @@ public class PlayerController : MonoBehaviour
         //collision with boss
         if (collision.gameObject.CompareTag("Boss"))
         {
+            Debug.Log("Boss touched me!! :-O");
             Death();
         }
 
