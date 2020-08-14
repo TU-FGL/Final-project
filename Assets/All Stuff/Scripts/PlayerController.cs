@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private BossController bossPlayerInstance;
+
     //Game Over Text
     public TextMeshProUGUI gameOverText;
     public Button restartButton;
@@ -82,12 +84,16 @@ public class PlayerController : MonoBehaviour
     private bool isBossSoundPlayed = false;
     private bool isFinishSoundPlayed = false;
     private bool isRotated = false;
+    private bool isTurnedRight = true;
+    private bool isTurnedLeft = false;
+    private bool isDeadSoundPlayed = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        bossPlayerInstance = GameObject.Find("Player").GetComponent<BossController>();
+
         //accessing player's components
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
@@ -161,6 +167,8 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("won");
                 playerRb.transform.Rotate(0, 90, 0);
                 isRotated = true;
+                restartButton.gameObject.SetActive(true);
+                exitButton.gameObject.SetActive(true);
             }
 
             Instantiate(home, new Vector3(30, 0, 0), home.transform.rotation);
@@ -307,6 +315,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) && isOnGround)// && gameObject.transform.position.x < rightBorder && hasPowerup)
         {
             Debug.Log("pushed");
+            if (!isTurnedRight)
+            {
+                Debug.Log("Right" + playerRb.rotation.y);
+                playerRb.transform.Rotate(0, 180, 0);
+                isTurnedRight = true;
+                //isTurnedLeft = false;
+            }
+
+
             float a = 200f;
             playerRb.AddForce(Vector3.right * a, ForceMode.Acceleration);
         }
@@ -314,6 +331,14 @@ public class PlayerController : MonoBehaviour
         //move to left
         if (Input.GetKeyDown(KeyCode.LeftArrow) && isOnGround)// && gameObject.transform.position.x > leftBorder && hasPowerup)
         {
+            if (isTurnedRight)
+            {
+                Debug.Log("Left" + playerRb.rotation.y);
+                playerRb.transform.Rotate(0, 180, 0);
+                isTurnedRight = false;
+                //isTurnedRight = true;
+            }
+
             float a = 200f;
             playerRb.AddForce(Vector3.left * a, ForceMode.Acceleration);
         }
@@ -353,7 +378,11 @@ public class PlayerController : MonoBehaviour
         GameOver();
         Debug.Log("Game Over!");
         playerAnim.SetTrigger("deathTrigger");
-        playerAudio.PlayOneShot(deathSound, pitch);
+        if (!isDeadSoundPlayed)
+        {
+            playerAudio.PlayOneShot(deathSound, pitch);
+            isDeadSoundPlayed = true;
+        }
         restartButton.gameObject.SetActive(true);
         exitButton.gameObject.SetActive(true);
         if (null != crashParticle)
@@ -370,7 +399,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log("won");
         playerRb.transform.Rotate(0, 180, 0);
         playerAudio.PlayOneShot(victorySound, pitch);
-        if(null != fireworksParticle)
+        restartButton.gameObject.SetActive(true);
+        exitButton.gameObject.SetActive(true);
+        if (null != fireworksParticle)
         {
 
             fireworksParticle.Play();

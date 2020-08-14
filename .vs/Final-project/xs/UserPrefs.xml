@@ -2,37 +2,16 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/All Stuff/Scripts/PlayerController.cs">
     <Files>
       <File FileName="Assets/All Stuff/Scripts/SpawnManager.cs" Line="111" Column="55" />
-      <File FileName="Assets/All Stuff/Scripts/BossController.cs" Line="79" Column="57" />
+      <File FileName="Assets/All Stuff/Scripts/BossController.cs" />
       <File FileName="Assets/All Stuff/Scripts/PlayerController.cs" Line="357" Column="50" />
-      <File FileName="Assets/All Stuff/Scripts/RepeatBackground.cs" Line="9" Column="5" />
-      <File FileName="Assets/All Stuff/Scripts/MoveLeft.cs" Line="14" Column="93" />
-      <File FileName="Assets/All Stuff/Scripts/backgroundLoop.cs" Line="61" Column="18" />
+      <File FileName="Assets/All Stuff/Scripts/RepeatBackground.cs" />
+      <File FileName="Assets/All Stuff/Scripts/MoveLeft.cs" />
+      <File FileName="Assets/All Stuff/Scripts/backgroundLoop.cs" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Final-project" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="All Stuff" expanded="True">
-                <Node name="Scripts" expanded="True">
-                  <Node name="PlayerController.cs" selected="True" />
-                </Node>
-                <Node name="Sound" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="Final-project" expanded="True" selected="True" />
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="af3a2450-ebf2-49e8-ae5f-dd8ac2d2d514" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="94c02aa6-07e0-4605-b6a1-dcbbce7ac12c" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
